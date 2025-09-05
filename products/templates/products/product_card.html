@@ -1,0 +1,105 @@
+{% extends "products/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Карточка товара</h1>
+    <div>
+        <a class="btn btn-outline-secondary me-2" href="{% url 'products:product-list'%}">
+            <i class="bi bi-arrow-left me-1"></i> Назад
+        </a>
+        <button class="btn btn-primary">
+            <i class="bi bi-pencil me-1"></i> Редактировать
+        </button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-5">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Изображение товара</h5>
+            </div>
+            <div class="card-body text-center">
+                <img src="https://via.placeholder.com/300" class="img-fluid rounded" alt="Изображение товара">
+                <div class="mt-3">
+                    <button class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-camera me-1"></i> Заменить изображение
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Статистика продаж</h5>
+            </div>
+            <div class="card-body">
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Продано за месяц:</span>
+                    <strong>24 шт.</strong>
+                </div>
+                <div class="d-flex justify-content-between mb-2">
+                    <span>Выручка:</span>
+                    <strong>143 976 ₽</strong>
+                </div>
+                <div class="d-flex justify-content-between">
+                    <span>В среднем в день:</span>
+                    <strong>0.8 шт.</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-7">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Основная информация</h5>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">SKU:</div>
+                    <div class="col-sm-8">{{ product.id }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Название:</div>
+                    <div class="col-sm-8">{{ product.name }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Категория:</div>
+                    <div class="col-sm-8">{{ product.category }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Количество на складе:</div>
+                    <div class="col-sm-8">{{ product.quantity }} шт.</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Цена:</div>
+                    <div class="col-sm-8">СЕБЕСТОИМОСТЬ </div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Стоимость реализации:</div>
+                    <div class="col-sm-8">{{ product.price }}</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Поставщик:</div>
+                    <div class="col-sm-8">-- ПОСТАВЩИКИ</div>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-sm-4 fw-bold">Дата добавления:</div>
+                    <div class="col-sm-8">15.03.2023</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Описание товара</h5>
+            </div>
+            <div class="card-body">
+                <p>Классические джинсы Levi's 511 Slim Fit. Облегающий крой, удобная посадка, качественный деним. Идеально подходят для повседневной носки.</p>
+                <p>Состав: 99% хлопок, 1% эластан. Страна производства: Бангладеш.</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

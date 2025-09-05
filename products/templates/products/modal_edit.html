@@ -1,0 +1,35 @@
+<!-- templates/modal_edit.html -->
+<div class="modal-background" id="editModalBackground" style="display: none;">
+    <div class="modal-container">
+        <div class="modal-content">
+            <!-- В action можно указать URL вашего основного представления -->
+            <form id="editProductForm" method="post" action="" novalidate>
+                {% csrf_token %}
+                <!-- Скрытые поля для идентификации формы и товара -->
+                <input type="hidden" name="form_type" value="edit_product">
+                <input type="hidden" name="product_id" id="editProductId" value="{{ edit_form.instance.id | default:'' }}">
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Редактировать товар</h5>
+                    <button type="button" class="btn-close" onclick="closeEditModal()"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Используем переменную edit_form, которую передадим из view -->
+                    {% for field in edit_form %}
+                        <p>
+                            {{ field.label_tag }}
+                            {{ field }}
+                            {% if field.errors %}
+                                <div class="errorlist">{{ field.errors }}</div>
+                            {% endif %}
+                        </p>
+                    {% endfor %}
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeEditModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить изменения</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

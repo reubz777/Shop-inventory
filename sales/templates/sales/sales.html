@@ -1,0 +1,101 @@
+{% extends "products/base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">История продаж</h1>
+    <a href="{% url 'sales:sale-create' %}" class="btn btn-primary d-flex align-items-center">
+        <i class="bi bi-plus-circle me-2"></i> Новая продажа
+    </a>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card stats-card">
+            <i class="bi bi-cart-check"></i>
+            <h2>{{ total_sales }}</h2>
+            <p>Продаж за все время</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card">
+            <i class="bi bi-currency-dollar"></i>
+            <h2>{{ total_revenue }} BYN </h2>
+            <p>Общая выручка</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card">
+            <i class="bi bi-cart-plus"></i>
+            <h2>{{ average_receipt }} BYN</h2>
+            <p>Средний чек</p>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card stats-card">
+            <i class="bi bi-graph-up"></i>
+            <h2> Пока не знаю  </h2>
+            <p>Рост продаж</p>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center">
+        <h5 class="mb-0">Список продаж</h5>
+        <form method="get" class="d-flex align-items-center">
+            <input type="date" class="form-control form-control-sm me-2" name="start_date"
+                   value="{{ current_start_date }}" style="width: 140px;">
+            <input type="date" class="form-control form-control-sm me-2" name="end_date"
+                   value="{{ current_end_date }}" style="width: 140px;">
+            <div class="search-form me-2 position-relative" style="width: 200px;">
+                <i class="bi bi-search position-absolute" style="left: 10px; top: 50%; transform: translateY(-50%); z-index: 10; color: #6c757d;"></i>
+                <input type="text" class="form-control form-control-sm ps-4" name="search"
+                       value="{{ current_search }}" placeholder="  Поиск продаж...">
+            </div>
+            <button type="submit" class="btn btn-primary btn-sm me-2" style="min-width: 80px;">
+                <i class="bi bi-search me-1"></i>Найти
+            </button>
+            <a href="?" class="btn btn-outline-secondary btn-sm" style="min-width: 80px;">
+                <i class="bi bi-x-circle me-1"></i>Сбросить
+            </a>
+        </form>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>ID продажи</th>
+                        <th>Дата</th>
+                        <th>Клиент</th>
+                        <th>Товар</th>
+                        <th>Количество</th>
+                        <th>Цена</th>
+                        <th>Сумма</th>
+                        <th>Статус</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sale in sales %}
+                        <tr>
+                            <td> {{ sale.id }} </td>
+                            <td> {{ sale.formatted_date }}</td>
+                            <td> NONE </td>
+                            <td> {{ sale.product }}</td>
+                            <td> {{ sale.quantity }} </td>
+                            <td> {{ sale.product.price }}</td>
+                            <td> <strong>{{ sale.total_price }}</strong></td>
+                            <td><span class="badge bg-success">Завершено</span></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% include 'products/paginator.html' %}
+<script>
+</script>
+
+{% endblock %}

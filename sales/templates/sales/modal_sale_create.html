@@ -1,0 +1,225 @@
+{% extends "products/base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="modal-background" id="saleModalBackground">
+    <div class="modal-container">
+        <div class="modal-content">
+            <form method="post" action="{% url 'sales:sale-create' %}" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="modal-header">
+                    <h5 class="modal-title">Новая продажа</h5>
+                    <a href="{% url 'sales:sales-list' %}" class="btn-close text-decoration-none">&times;</a>
+                </div>
+
+                <div class="modal-body">
+                    <!-- Поле товара с поиском -->
+                    <div class="mb-3">
+                        <label for="{{ form.product.id_for_label }}" class="form-label">
+                            {{ form.product.label }} <span class="text-danger">*</span>
+                        </label>
+                        {{ form.product }}
+                        {% if form.product.help_text %}
+                        <div class="form-text">{{ form.product.help_text }}</div>
+                        {% endif %}
+                        {% for error in form.product.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <!-- Остальные поля -->
+                    <div class="mb-3">
+                        <label for="{{ form.quantity.id_for_label }}" class="form-label">
+                            {{ form.quantity.label }} <span class="text-danger">*</span>
+                        </label>
+                        {{ form.quantity }}
+                        {% if form.quantity.help_text %}
+                        <div class="form-text">{{ form.quantity.help_text }}</div>
+                        {% endif %}
+                        {% for error in form.quantity.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ form.sale_date.id_for_label }}" class="form-label">
+                            {{ form.sale_date.label }} <span class="text-danger">*</span>
+                        </label>
+                        <div class="input-group">
+                            {{ form.sale_date }}
+                        </div>
+                        {% if form.sale_date.help_text %}
+                        <div class="form-text">{{ form.sale_date.help_text }}</div>
+                        {% endif %}
+                        {% for error in form.sale_date.errors %}
+                        <div class="invalid-feedback d-block">{{ error }}</div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <a href="{% url 'sales:sales-list' %}" class="btn btn-secondary">Отмена</a>
+                    <button type="submit" class="btn btn-primary">Сохранить продажу</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/select2-bootstrap-5-theme@1.3.0/dist/select2-bootstrap-5-theme.min.css" rel="stylesheet" />
+<style>
+    /* Исправляем позиционирование плейсхолдера */
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        display: flex !important;
+        align-items: center !important;
+        height: 100% !important;
+        padding: 0.75rem 1rem !important;
+        line-height: 1.5 !important;
+    }
+
+    /* Убедимся, что плейсхолдер виден */
+    .select2-container--default .select2-selection--single .select2-selection__placeholder {
+        color: #6c757d !important;
+        line-height: normal !important;
+    }
+
+    /* Выравнивание стрелки */
+    .select2-container--default .select2-selection--single .select2-selection__arrow {
+        height: 100% !important;
+        display: flex !important;
+        align-items: center !important;
+    }
+
+    /* Базовые стили для Select2 */
+    .select2-container .select2-selection--single {
+        height: 45px !important;
+        border: 1px solid #ced4da !important;
+        border-radius: 6px !important;
+    }
+
+    .select2-container .select2-selection--single .select2-selection__rendered {
+        padding: 0.75rem 1rem !important;
+        line-height: 1.5 !important;
+    }
+
+    .select2-container .select2-selection--single .select2-selection__arrow {
+        height: 43px !important;
+    }
+
+    .select2-container--bootstrap-5 .select2-dropdown {
+        border: 1px solid #ced4da !important;
+        border-radius: 6px !important;
+    }
+
+    .select2-search--dropdown .select2-search__field {
+        border: 1px solid #ced4da !important;
+        border-radius: 4px !important;
+        padding: 6px !important;
+    }
+
+    /* Модальное окно */
+    .modal-background {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1060;
+    }
+
+    .modal-container {
+        max-width: 500px;
+        width: 90%;
+    }
+
+    .modal-content {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .modal-header {
+        border-bottom: 1px solid #dee2e6;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .modal-footer {
+        border-top: 1px solid #dee2e6;
+        padding: 1rem 1.5rem;
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.5rem;
+    }
+
+    .btn-close {
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        opacity: 0.7;
+    }
+
+    .btn-close:hover {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/i18n/ru.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Инициализация Select2 для поля товара
+        $('#id_product').select2({
+            language: "ru",
+            placeholder: "Начните вводить название товара...",
+            theme: "bootstrap-5",
+            minimumInputLength: 0,
+            allowClear: true,
+            dropdownParent: $('#saleModalBackground'),
+            width: '100%'
+        });
+
+        // Открываем поиск при фокусе
+        $('#id_product').on('select2:open', function() {
+            setTimeout(function() {
+                document.querySelector('.select2-search__field').focus();
+            }, 100);
+        });
+
+        // Фокус на поле даты при клике на иконку
+        const dateIcon = document.querySelector('.input-group-text');
+        const dateInput = document.querySelector('input[type="datetime-local"]');
+
+        if (dateIcon && dateInput) {
+            dateIcon.addEventListener('click', function() {
+                dateInput.focus();
+                if (dateInput.showPicker) {
+                    dateInput.showPicker();
+                }
+            });
+        }
+
+        // Автофокус на поле товара при открытии модалки
+        setTimeout(function() {
+            $('#id_product').select2('open');
+        }, 300);
+    });
+</script>
+{% endblock %}
